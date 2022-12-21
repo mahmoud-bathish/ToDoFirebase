@@ -26,17 +26,17 @@ export class DashboardComponent implements OnInit {
         return a.isDone -b.isDone
       });
     })
-    this.getUID()
+    // this.getUID()
+    // this.authsvc.getUid();
   }
-  getUID(){
-    this.fireauth.currentUser.then((data)=>{
-      this.uid = data?.uid;
-    })
-  }
+  // getUID(){
+  //   this.fireauth.currentUser.then((data)=>{
+  //     this.uid = data?.uid;
+  //   })
+  // }
 //db.collection('Users', ref => ref.where("age", ">=", "18")).valueChanges();
 
   onClick(titleInput:HTMLInputElement){
-    this.getUID()
     this.authsvc.getUid()
     console.log("mn el Service  "  +this.authsvc.uid)
    if(titleInput.value){
