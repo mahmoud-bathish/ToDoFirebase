@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AuthService } from '../shared/auth.service';
 import { TodoService } from '../shared/todo.service';
 
 @Component({
@@ -8,8 +10,13 @@ import { TodoService } from '../shared/todo.service';
 })
 export class DashboardComponent implements OnInit {
   todos: any[] = [];
+  uid: string|undefined = ''
   constructor(
-    private todosvc:TodoService
+    private todosvc:TodoService,
+    private authsvc:AuthService,
+    private fireauth: AngularFireAuth,
+
+
   ) { }
 
   ngOnInit(): void {
@@ -17,13 +24,23 @@ export class DashboardComponent implements OnInit {
     .subscribe(item=>{
       this.todos = item.sort((a:any,b:any)=>{
         return a.isDone -b.isDone
-        });
+      });
+    })
+    this.getUID()
+  }
+  getUID(){
+    this.fireauth.currentUser.then((data)=>{
+      this.uid = data?.uid;
     })
   }
+//db.collection('Users', ref => ref.where("age", ">=", "18")).valueChanges();
 
   onClick(titleInput:HTMLInputElement){
+    this.getUID()
+    this.authsvc.getUid()
+    console.log("mn el Service  "  +this.authsvc.uid)
    if(titleInput.value){
-    this.todosvc.addToDo( titleInput.value);
+    this.todosvc.addToDo( titleInput.value,this.uid);
     titleInput.value = '';
    }
   }

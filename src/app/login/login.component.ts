@@ -18,9 +18,15 @@ export class LoginComponent implements OnInit {
   login() {
     if(this.email !== '' && this.password !== ''){
       this.auth.login(this.email, this.password);
-
       this.email = '';
       this.password = '';
     }
+    setTimeout(() => {
+      this.getuid();
+
+    }, 2000);
+  }
+  getuid(){
+    this.auth.getUid()
   }
 }

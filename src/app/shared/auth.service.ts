@@ -6,13 +6,29 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
+  uid:string | undefined ;
   constructor(
     private fireauth: AngularFireAuth,
     private router: Router,
-  ) { }
+  ) {
+this.getUid()
+  }
+
+  getUid() {
+    this.fireauth.currentUser.then((data)=>{
+      this.uid = data?.uid;
+    })
+  }
+  gett(){
+    let y;
+    this.fireauth.currentUser.then(x => y = x?.uid);
+    return y;
+  }
 
   login(email:string,password:string){
     this.fireauth.signInWithEmailAndPassword(email,password).then( () => {
+      this.getUid()
+      console.log(this.uid)
       localStorage.setItem('token','true');
       this.router.navigate(['dashboard']);
     }, err => {
@@ -20,6 +36,8 @@ export class AuthService {
       this.router.navigate(['/login'])
     })
   }
+
+
 
   register(email:string,password:string){
     this.fireauth.createUserWithEmailAndPassword(email,password).then( ()=> {
