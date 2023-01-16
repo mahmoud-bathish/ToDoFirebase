@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row mt-5">
     <div class="col"></div>
-    <div class="col-4">
+    <div class="col-md-5 col-sm-8">
       <div class="card shadow">
         <div class="card-body">
           <form>
@@ -18,15 +18,13 @@
               <label for="exampleInputPassword1" class="form-label">Password</label>
               <input type="password" id="exampleInputPassword1" class="form-control" name="password" [(ngModel)]="password">
             </div>
-            <button type="button" class="btn btn-info" (click)="login()">Login</button>
+            <button type="button" class="btn btn-info" (click)="login();getUID()">Login</button>
             <div class="row">
               <div class="col-md-6">
                 <a routerLink="/register" style="text-decoration:none;">Need Account ? <span class="text-danger">Register</span></a>
               </div>
-              <div class="col-md-6 text-dark" style="text-decoration:none;">Forget Password</div>
             </div>
           </form>
-          <button type="button" (click)="getuid()">Get uid</button>
         </div>
       </div>
     </div>

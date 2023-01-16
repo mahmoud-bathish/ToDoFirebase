@@ -14,19 +14,20 @@ export class TodoService {
   firestoreCollection: AngularFirestoreCollection;
   constructor(
     private firestore:AngularFirestore,
-    private authhh:AuthService,
     private fireauth: AngularFireAuth,
 
   ) {
-    this.getUid()
-    this.firestoreCollection = firestore.collection('todo', ref => ref.where("user_id", "==", this.uid))
+    this.firestoreCollection = firestore.collection('todo')
   }
+
   getUid() {
-    this.fireauth.currentUser.then((data)=>{
-      this.uid = data?.uid;
+    this.fireauth.currentUser.then((data:any)=>{
+      localStorage.setItem('token',data.uid)
+
     })
   }
-  addToDo(title:string,user_id:string|undefined){
+
+  addToDo(title:string,user_id:any){
     this.firestoreCollection.add({
       title,
       isDone:false,

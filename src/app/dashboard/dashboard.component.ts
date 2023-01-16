@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from '../shared/auth.service';
 import { TodoService } from '../shared/todo.service';
 
@@ -10,37 +11,24 @@ import { TodoService } from '../shared/todo.service';
 })
 export class DashboardComponent implements OnInit {
   todos: any[] = [];
-  uid: string|undefined = ''
   constructor(
     private todosvc:TodoService,
-    private authsvc:AuthService,
-    private fireauth: AngularFireAuth,
-
-
+    private firestore:AngularFirestore,
   ) { }
 
   ngOnInit(): void {
-    this.todosvc.firestoreCollection.valueChanges({idField:'id'})
+    console.log(localStorage.getItem('token'))
+    this.firestore.collection('todo',ref => ref.where("user_id", "==",localStorage.getItem('token')) ).valueChanges({idField:'id'})
     .subscribe(item=>{
       this.todos = item.sort((a:any,b:any)=>{
         return a.isDone -b.isDone
       });
     })
-    // this.getUID()
-    // this.authsvc.getUid();
   }
-  // getUID(){
-  //   this.fireauth.currentUser.then((data)=>{
-  //     this.uid = data?.uid;
-  //   })
-  // }
-//db.collection('Users', ref => ref.where("age", ">=", "18")).valueChanges();
 
   onClick(titleInput:HTMLInputElement){
-    this.authsvc.getUid()
-    console.log("mn el Service  "  +this.authsvc.uid)
    if(titleInput.value){
-    this.todosvc.addToDo( titleInput.value,this.uid);
+    this.todosvc.addToDo( titleInput.value,localStorage.getItem('token'));
     titleInput.value = '';
    }
   }

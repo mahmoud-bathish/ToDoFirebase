@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
+import { TodoService } from '../shared/todo.service';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ export class LoginComponent implements OnInit {
   password: string = '';
   constructor(
     private auth : AuthService,
+    private todo:TodoService
   ) { }
 
   ngOnInit(): void {
@@ -21,12 +23,9 @@ export class LoginComponent implements OnInit {
       this.email = '';
       this.password = '';
     }
-    setTimeout(() => {
-      this.getuid();
+  }
+  getUID(){
+    this.todo.getUid();
+  }
 
-    }, 2000);
-  }
-  getuid(){
-    this.auth.getUid()
-  }
 }
